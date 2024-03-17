@@ -485,12 +485,17 @@ int main() {
 	if (GetUserName(username, &username_len)) {
 		if (strcmp(username, "Cristi") == 0) {
 			rootFolderPath = "C:\\Users\\Cristian\\Desktop\\Weather_Recognition_Proj\\dataset";
-		}// aici iti faci un else if cu numele tau. Ca sa l vezi da i intai un printf la username sa vezi ce ti da
+		}
+		else if (strcmp(username, "ioanf") == 0) {
+			rootFolderPath = "C:\\Users\\ioanf\\Desktop\\Facultate An 3 SEM 2\\PI\\Proiect\\dataset";
+		}
+		else {
+			// aici iti faci un else if cu numele tau. Ca sa l vezi da i intai un printf la username sa vezi ce ti da
+		}
 	}
 	else {
 		std::cerr << "Couldn't obtain username!!" << std::endl;
 	}
 	traverseFolder(rootFolderPath);
-
 	return 0;
 }
