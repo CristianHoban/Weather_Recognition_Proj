@@ -10,6 +10,7 @@ wchar_t* projectPath;
 
 struct ImageData {
 	std::string path;
+	std::string label;
 };
 
 
@@ -28,6 +29,10 @@ void testNumberImages(std::vector<ImageData> trainImages, std::vector<ImageData>
 	}
 }
 
+std::string extractLabel(std::string& path) {
+	size_t lastApp = path.find_last_of("\\/");
+	return path.substr(lastApp + 1);
+}
 
 void traverseFolder(const char* folderPath, std::vector<ImageData>& trainImages, std::vector<ImageData>& testImages, bool& ok) {
 	WIN32_FIND_DATA findFileData;
@@ -58,6 +63,7 @@ void traverseFolder(const char* folderPath, std::vector<ImageData>& trainImages,
 			else { 
 					ImageData imageData;
 					imageData.path = std::string(filePath);
+					imageData.label = extractLabel(std::string(folderPath));
 					if (ok) {
 						testImages.push_back(imageData);
 						ok = false;
@@ -77,7 +83,7 @@ int main() {
 	const char* rootFolderPath = NULL;
 	char username[100]; // Spațiul pentru stocarea numelui utilizatorului
 	DWORD username_len = 100; // Lungimea buffer-ului
-
+	
 	std::vector<ImageData> trainImages;
 	std::vector<ImageData> testImages;
 	bool ok = false;
@@ -90,7 +96,8 @@ int main() {
 		else if (strcmp(username, "ioanf") == 0) {
 			rootFolderPath = "C:\\Users\\ioanf\\Desktop\\Facultate An 3 SEM 2\\PI\\Proiect\\dataset";
 		}
-		else {
+		else if(strcmp(username, "HP") == 0) {
+			rootFolderPath = "D:\\OpenCVApplication-VS2022_OCV490_basic\\dataset";
 			// aici iti faci un else if cu numele tau. Ca sa l vezi da i intai un printf la username sa vezi ce ti da
 		}
 	}
@@ -99,5 +106,7 @@ int main() {
 	}
 	traverseFolder(rootFolderPath, trainImages, testImages, ok);
 	testNumberImages(trainImages, testImages);
+	
+
 	return 0;
 }
