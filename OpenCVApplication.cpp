@@ -484,7 +484,7 @@ int main() {
 
 	if (GetUserName(username, &username_len)) {
 		if (strcmp(username, "Cristi") == 0) {
-			rootFolderPath = "C:\\Users\\Cristian\\Desktop\\PI_Project_GITHUB\\dataset";
+			rootFolderPath = "C:\\Users\\Cristian\\Desktop\\Weather_Recognition_Proj\\dataset";
 		}// aici iti faci un else if cu numele tau. Ca sa l vezi da i intai un printf la username sa vezi ce ti da
 	}
 	else {
