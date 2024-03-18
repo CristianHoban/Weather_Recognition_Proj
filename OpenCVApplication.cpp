@@ -10,9 +10,8 @@ wchar_t* projectPath;
 
 struct ImageData {
 	std::string path;
-	std::string label;
+	int label;
 };
-
 
 bool isImage(const char* filename) {
 	Mat img = imread(filename, IMREAD_UNCHANGED);
@@ -29,9 +28,44 @@ void testNumberImages(std::vector<ImageData> trainImages, std::vector<ImageData>
 	}
 }
 
-std::string extractLabel(std::string& path) {
+
+int extractLabel(std::string& path) {
 	size_t lastApp = path.find_last_of("\\/");
-	return path.substr(lastApp + 1);
+	std::string aux = path.substr(lastApp + 1);
+	if (aux == "dew") {
+		return 0;
+	}
+	else if (aux == "fogsmog") {
+		return 1;
+	}
+	else if (aux == "frost") {
+		return 2;
+	}
+	else if (aux == "glaze") {
+		return 3;
+	}
+	else if (aux == "hail") {
+		return 4;
+	}
+	else if (aux == "lightning") {
+		return 5;
+	}
+	else if (aux == "rain") {
+		return 6;
+	}
+	else if (aux == "rainbow") {
+		return 7;
+	}
+	else if (aux == "rime") {
+		return 8;
+	}
+	else if (aux == "sandstorm") {
+		return 9;
+	}
+	else if (aux == "snow") {
+		return 10;
+	}
+	return 0;
 }
 
 void traverseFolder(const char* folderPath, std::vector<ImageData>& trainImages, std::vector<ImageData>& testImages, bool& ok) {
@@ -88,7 +122,6 @@ int main() {
 	std::vector<ImageData> testImages;
 	bool ok = false;
 
-
 	if (GetUserName(username, &username_len)) {
 		if (strcmp(username, "Cristi") == 0) {
 			rootFolderPath = "C:\\Users\\Cristian\\Desktop\\Weather_Recognition_Proj\\dataset";
@@ -98,7 +131,6 @@ int main() {
 		}
 		else if(strcmp(username, "HP") == 0) {
 			rootFolderPath = "D:\\OpenCVApplication-VS2022_OCV490_basic\\dataset";
-			// aici iti faci un else if cu numele tau. Ca sa l vezi da i intai un printf la username sa vezi ce ti da
 		}
 	}
 	else {
@@ -106,7 +138,9 @@ int main() {
 	}
 	traverseFolder(rootFolderPath, trainImages, testImages, ok);
 	testNumberImages(trainImages, testImages);
-	
-
+	printf("%d, %d\n", trainImages.size(), testImages.size());
+	for (ImageData imageData : testImages) {
+		printf("path: %s\neticheta: %d\n", imageData.path.c_str(), imageData.label);
+	}
 	return 0;
 }
