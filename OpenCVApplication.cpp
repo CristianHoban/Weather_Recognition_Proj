@@ -18,16 +18,6 @@ bool isImage(const char* filename) {
 	return !img.empty();
 }
 
-void testNumberImages(std::vector<ImageData> trainImages, std::vector<ImageData> testImages) {
-	printf("Test numarare imagini!\n");
-	if (trainImages.size() + testImages.size() == 6862) {
-		printf("Test reusit!!\n");
-	}
-	else {
-		printf("Test picat!!\n");
-	}
-}
-
 
 int extractLabel(std::string& path) {
 	size_t lastApp = path.find_last_of("\\/");
@@ -113,7 +103,46 @@ void traverseFolder(const char* folderPath, std::vector<ImageData>& trainImages,
 	FindClose(hFind);
 }
 
+double accuracy(std::vector<ImageData> original, std::vector<ImageData> generate) {
+	double ok = 0;
+	for (int i = 0; i < generate.size(); i++) {
+		if (original[i].label == generate[i].label) {
+			ok++;
+		}
+	}
+	return ok / original.size();
+}
+
+ImageData generateRandomLabel(ImageData imageData) {
+	ImageData newImageData;
+	newImageData.path = imageData.path;
+	newImageData.label = rand() % 10;
+	return newImageData;
+}
+// Test 1
+void testNumberImages(std::vector<ImageData> trainImages, std::vector<ImageData> testImages) {
+	printf("Test 1 -> Numarare imagini!\n");
+	if (trainImages.size() + testImages.size() == 6862) {
+		printf("Test reusit!\n");
+	}
+	else {
+		printf("Test picat!\n");
+	}
+}
+
+// Test 2
+void testCompareLabel(std::vector<ImageData> testImages) {
+	printf("Test 2 -> Comparare etichete!\n");
+	std::vector<ImageData> randomLabel;
+	for (ImageData imageData : testImages) {
+		ImageData newImageData = generateRandomLabel(imageData);
+		randomLabel.push_back(newImageData);
+	}
+	printf("Accuracy: %lf\n", accuracy(testImages, randomLabel));
+}
+
 int main() {
+	srand(time(NULL));
 	const char* rootFolderPath = NULL;
 	char username[100]; // Spațiul pentru stocarea numelui utilizatorului
 	DWORD username_len = 100; // Lungimea buffer-ului
@@ -138,9 +167,9 @@ int main() {
 	}
 	traverseFolder(rootFolderPath, trainImages, testImages, ok);
 	testNumberImages(trainImages, testImages);
-	printf("%d, %d\n", trainImages.size(), testImages.size());
-	for (ImageData imageData : testImages) {
-		printf("path: %s\neticheta: %d\n", imageData.path.c_str(), imageData.label);
-	}
+	//for (ImageData imageData : testImages) {
+	//	printf("path: %s -> eticheta: %d\n", imageData.path.c_str(), imageData.label);
+	//}
+	testCompareLabel(testImages);
 	return 0;
 }
