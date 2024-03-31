@@ -268,6 +268,7 @@ void accPerClass(std::vector<ImageData> images, std::vector<Scalar> medii) {
 	printf("\n");
 }
 
+
 int main() {
 	cv::utils::logging::setLogLevel(cv::utils::logging::LOG_LEVEL_FATAL);
 	projectPath = _wgetcwd(0, 0);
@@ -295,18 +296,16 @@ int main() {
 		std::cerr << "Couldn't obtain username!!" << std::endl;
 	}
 	traverseFolder(rootFolderPath, trainImages, testImages, ok);
-	//testNumberImages(trainImages, testImages);
-	//std::vector<Scalar> medii = calculMedieCuloriPerClasa(trainImages);
-	//accPerClass(testImages, medii);
+	testCompareLabel(testImages);
 	int op;
 	do
 	{
 		system("cls");
 		destroyAllWindows();
 		printf("Menu:\n");
-		printf(" 1 - Test numarare fisiere\n");
-		printf(" 2 - Test comparare etichete random\n");
-		printf(" 3 - Test comparare etichete culori\n");
+		printf(" 1 - Test number images\n");
+		printf(" 2 - Test compare random label\n");
+		printf(" 3 - Test compare something label\n");
 		printf(" 0 - Exit\n\n");
 		printf("Option: ");
 		scanf("%d", &op);
@@ -320,7 +319,7 @@ int main() {
 			break;
 		case 3:
 			std::vector<Scalar> medii = calculMedieCuloriPerClasa(trainImages);
-			accPerClass(testImages,medii);
+			accPerClass(testImages, medii);
 			break;
 		}
 		system("pause");
