@@ -116,7 +116,7 @@ double accuracy(std::vector<ImageData> original, std::vector<ImageData> generate
 ImageData generateRandomLabel(ImageData imageData) {
 	ImageData newImageData;
 	newImageData.path = imageData.path;
-	newImageData.label = rand() % 10;
+	newImageData.label = rand() % 11;
 	return newImageData;
 }
 // Test 1
@@ -139,6 +139,29 @@ void testCompareLabel(std::vector<ImageData> testImages) {
 		randomLabel.push_back(newImageData);
 	}
 	printf("Accuracy: %lf\n", accuracy(testImages, randomLabel));
+}
+
+void accPerClass(std::vector<ImageData> images) {
+	const int size = 11;
+	int matrix[size][size];
+	for (int i = 0; i < size; ++i) {
+		for (int j = 0; j < size; ++j) {
+			matrix[i][j] = 0;
+		}
+	}
+	for (ImageData imageData : images) {
+		ImageData newImageData = generateRandomLabel(imageData);
+		int x = imageData.label;
+		int y = newImageData.label;
+		matrix[x][y]++;
+	}
+
+	for (int i = 0; i < size; ++i) {
+		for (int j = 0; j < size; ++j) {
+			printf("%d   ", matrix[i][j]);
+		}
+		printf("\n");
+	}
 }
 
 int main() {
@@ -170,6 +193,8 @@ int main() {
 	//for (ImageData imageData : testImages) {
 	//	printf("path: %s -> eticheta: %d\n", imageData.path.c_str(), imageData.label);
 	//}
-	testCompareLabel(testImages);
+	//testCompareLabel(testImages);
+	accPerClass(testImages);
+
 	return 0;
 }
